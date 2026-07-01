@@ -1,0 +1,42 @@
+{
+  "name": "opencode-history-fulltext-search",
+  "version": "0.1.0",
+  "description": "opencode TUI plugin for full-text search over session history",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jiří Forst",
+  "homepage": "https://github.com/forstjiri/opencode-history-fulltext-search",
+  "repository": {
+    "type": "git",
+    "url": "github:forstjiri/opencode-history-fulltext-search"
+  },
+  "bugs": {
+    "url": "https://github.com/forstjiri/opencode-history-fulltext-search/issues"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "opencode-tui",
+    "tui",
+    "search",
+    "history",
+    "fulltext"
+  ],
+  "files": [
+    "search-history.tsx",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    "./tui": {
+      "import": "./search-history.tsx"
+    }
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.17.0",
+    "@opentui/core": ">=0.4.0",
+    "@opentui/solid": ">=0.4.0",
+    "@opentui/keymap": ">=0.4.0",
+    "solid-js": ">=1.9.0"
+  }
+}
