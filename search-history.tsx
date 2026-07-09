@@ -18,7 +18,7 @@
 import { createSignal, createMemo, For, Show, onCleanup } from "solid-js"
 import { useTerminalDimensions } from "@opentui/solid"
 import { useBindings } from "@opentui/keymap/solid"
-import { RGBA, TextAttributes, type ScrollBoxRenderable, type InputRenderable } from "@opentui/core"
+import { RGBA, TextAttributes, type BoxRenderable, type ScrollBoxRenderable, type InputRenderable } from "@opentui/core"
 import { createBindingLookup } from "@opencode-ai/plugin/tui"
 import type { TuiPlugin, TuiPluginApi, TuiPluginModule } from "@opencode-ai/plugin/tui"
 import { Database } from "bun:sqlite"
@@ -255,6 +255,7 @@ function ResultsDialog(props: { api: TuiPluginApi; scope: Scope }) {
   let noticeTimer: ReturnType<typeof setTimeout> | null = null
   let scroll: ScrollBoxRenderable | undefined
   let inputRef: InputRenderable | undefined
+  let dialogRoot: BoxRenderable | undefined
   let done = false
 
   const showCopyNotice = (variant: "success" | "warning", title: string, message: string) => {
@@ -320,6 +321,8 @@ function ResultsDialog(props: { api: TuiPluginApi; scope: Scope }) {
   }
 
   useBindings(() => ({
+    target: () => dialogRoot,
+    targetMode: "focus-within",
     commands: [
       { name: "sh.up", run: () => move(-1) },
       { name: "sh.down", run: () => move(1) },
@@ -348,7 +351,15 @@ function ResultsDialog(props: { api: TuiPluginApi; scope: Scope }) {
   const maxH = () => Math.max(8, Math.floor(dim().height / 2) - 3)
 
   return (
-    <box flexDirection="column" flexGrow={1} gap={1} paddingBottom={1}>
+    <box
+      flexDirection="column"
+      flexGrow={1}
+      gap={1}
+      paddingBottom={1}
+      ref={(r: BoxRenderable) => {
+        dialogRoot = r
+      }}
+    >
       <box paddingLeft={4} paddingRight={4} flexDirection="row" justifyContent="space-between">
         <text fg={theme.text} attributes={TextAttributes.BOLD}>
           {scope === "dir" ? `Search history — This dir (${shortDir(cwd)})` : "Search history — Anywhere"}
